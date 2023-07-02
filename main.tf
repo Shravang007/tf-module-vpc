@@ -1,9 +1,13 @@
+#1. Create VPC
+
 resource "aws_vpc" "main" {
   cidr_block         = var.cidr_block
   enable_dns_support = true
   tags = merge({
     Name = "${var.env}-vpc"}, var.tags)
 }
+
+#Create Subnets & Availability Zones
 
 module "subnets" {
   source = "./subnets"
@@ -17,6 +21,11 @@ module "subnets" {
   env  = var.env
   tags = var.tags
   az = var.az
+}
+
+resource "aws_vpc_peering_connection" "peer" {
+  peer_vpc_id   = aws_vpc.main.id
+  vpc_id        = aws_vpc.foo.id
 }
 
 #resource "aws_subnet" "main" {
