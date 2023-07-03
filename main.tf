@@ -36,6 +36,11 @@ resource "aws_internet_gateway" "igw" {
     Name = "${var.env}-igw"}, var.tags)
   }
 
+resource "aws_route" "route_igw" {
+  route_table_id            = module.subnets["public"].route_table_ids
+  destination_cidr_block    = "0.0.0.0/0"
+  carrier_gateway_id = aws_internet_gateway.igw.id
+}
 
 
 #resource "aws_subnet" "main" {
