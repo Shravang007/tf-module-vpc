@@ -55,9 +55,10 @@ resource "aws_nat_gateway" "ngw" {
 }
 
 resource "aws_route" "route_ngw" {
-  route_table_id            = module.subnets["public"].route_table_ids
+  count                     = length(local.private_route_table_ids)
+  route_table_id            = element(local.private_route_table_ids, count.index)
   destination_cidr_block    = "0.0.0.0/0"
-  gateway_id = aws_internet_gateway.igw.id
+  nat_gateway_id                = aws_nat_gateway.ngw.id
 }
 
 #resource "aws_subnet" "main" {
