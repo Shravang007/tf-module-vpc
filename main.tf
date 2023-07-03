@@ -29,6 +29,15 @@ resource "aws_vpc_peering_connection" "peer" {
   auto_accept   = true
 }
 
+resource "aws_internet_gateway" "igw" {
+  vpc_id = aws_vpc.main.id
+
+  tags = merge({
+    Name = "${var.env}-igw"}, var.tags)
+  }
+
+
+
 #resource "aws_subnet" "main" {
 #  count = length(var.web_subnet_cidr_block)
 #  vpc_id     = aws_vpc.main.id
