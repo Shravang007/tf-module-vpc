@@ -42,12 +42,12 @@ resource "aws_route" "route_igw" {
   gateway_id = aws_internet_gateway.igw.id
 }
 
-resource "aws_eip" "ngw" {
+resource "aws_eip" "eip" {
   domain = "vpc"
 }
 
 resource "aws_nat_gateway" "ngw" {
-  allocation_id = aws_eip.ngw.id
+  allocation_id = aws_eip.eip.id
   subnet_id     = lookup(lookup(module.subnets, "public", null ), "subnet_ids", null)[0]
 
   tags = merge({
