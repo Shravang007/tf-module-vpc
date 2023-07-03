@@ -42,21 +42,17 @@ resource "aws_route" "route_igw" {
   gateway_id = aws_internet_gateway.igw.id
 }
 
-resource "aws_eip" "eip" {
+resource "aws_eip" "ngw" {
   domain = "vpc"
 }
 
 resource "aws_nat_gateway" "ngw" {
-  allocation_id = aws_eip.eip.id
+  allocation_id = aws_eip.ngw.id
   subnet_id     = lookup(lookup(module.subnets, "public", null ), "subnet_ids", null)[0]
 
   tags = merge({
     Name = "${var.env}-ngw"}, var.tags)
 }
-
-  # To ensure proper ordering, it is recommended to add an explicit dependency
-  # on the Internet Gateway for the VPC.
-
 
 
 #resource "aws_subnet" "main" {
