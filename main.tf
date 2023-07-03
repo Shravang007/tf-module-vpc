@@ -54,6 +54,11 @@ resource "aws_nat_gateway" "ngw" {
     Name = "${var.env}-ngw"}, var.tags)
 }
 
+resource "aws_route" "route_ngw" {
+  route_table_id            = module.subnets["public"].route_table_ids
+  destination_cidr_block    = "0.0.0.0/0"
+  gateway_id = aws_internet_gateway.igw.id
+}
 
 #resource "aws_subnet" "main" {
 #  count = length(var.web_subnet_cidr_block)
