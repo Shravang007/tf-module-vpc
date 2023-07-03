@@ -61,6 +61,13 @@ resource "aws_route" "route_ngw" {
   nat_gateway_id                = aws_nat_gateway.ngw.id
 }
 
+resource "aws_route" "peer_route" {
+  count                     = length(local.all_route_table_ids)
+  route_table_id            = element(local.all_route_table_ids, count.index)
+  destination_cidr_block    = "172.31.0.0/16"
+  vpc_peering_connection_id = aws_vpc_peering_connection.peer.id
+}
+
 #resource "aws_subnet" "main" {
 #  count = length(var.web_subnet_cidr_block)
 #  vpc_id     = aws_vpc.main.id
