@@ -68,6 +68,12 @@ resource "aws_route" "peer_route" {
   vpc_peering_connection_id = aws_vpc_peering_connection.peer.id
 }
 
+resource "aws_route" "default_vpc_peer_route" {
+  route_table_id            = var.default_vpc_rt
+  destination_cidr_block    = var.cidr_block
+  vpc_peering_connection_id = aws_vpc_peering_connection.peer.id
+}
+
 #resource "aws_subnet" "main" {
 #  count = length(var.web_subnet_cidr_block)
 #  vpc_id     = aws_vpc.main.id
